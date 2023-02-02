@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/binhk1004/hello_nodejs#readme",
   "dependencies": {
+    "express": "^4.18.2",
     "underscore": "^1.13.6"
   }
 }
