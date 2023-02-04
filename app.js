@@ -11,6 +11,26 @@ app.locals.pretty = true;
 
 app.use(express.static('public'));
 
+app.get('/topic/:id', function(req, res){
+  //시멘틱 url을 쓰기 위해선 /:파라미터명 으로 한다.
+  var topics = [
+    'Javascript is....',
+    'Nodejs is...',
+    'Express is...'
+  ];
+  var output = `
+  <a href="/topic?id=0">JavaScript</a><br>
+  <a href="/topic?id=1">Nodejs</a><br>
+  <a href="/topic?id=2">Express</a><br><br>
+  ${topics[req.params.id]}
+  `
+  res.send(output);
+})
+
+app.get('/topic/:id/:mode', function(req, res){
+  res.send(req.params.id +',' + req.params.mode)
+})
+
 app.get('/templates', (req, res) => {
   res.render('temp', {time: Date(),title: 'hello'});
   //위에서 jade와 템플릿을 모아드는 폴더를 연결했으므로,
