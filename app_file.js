@@ -19,27 +19,24 @@ app.get('/', (req, res) => {
 });
 
 app.get('/topic/new', (req, res) => {
-    res.render('new')
+    fs.readdir('data', (err, files) => {
+        if(err){
+            console.log(err);
+            res.status(500).send('통신 에러 발생 하였습니다.');
+        }
+    res.render('new', {topics:files})
+    });
   });
 
-app.get('/topic', (req, res) => {
+app.get(['/topic', '/topic/:id'], (req, res) => {
     fs.readdir('data', (err, files) => {
         if(err){
             console.log(err);
             res.status(500).send('통신 에러 발생 하였습니다.');
         }
-        res.render('view', {topics:files});
-    });
-});
-
-app.get('/topic/:id', (req, res) => {
-    var id = req.params.id;
-
-    fs.readdir('data', (err, files) => {
-        if(err){
-            console.log(err);
-            res.status(500).send('통신 에러 발생 하였습니다.');
-        }
+        var id = req.params.id;
+        if(id){
+        //id 값이 있을때 접근
         fs.readFile('data/' + id, 'utf8', (err, data)=>{
             if(err){
                 console.log(err);
@@ -47,7 +44,11 @@ app.get('/topic/:id', (req, res) => {
             };
             res.render('view', {topics:files, title:id, dec:data});
         });
-    });
+        //id값이 없을때 접근
+    } else {
+        res.render('view', {topics:files, title:'welcome!', dec:'hello!'})
+    };
+});
 });
 
 app.post('/topic', (req, res) => {
